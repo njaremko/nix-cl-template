@@ -1,5 +1,5 @@
 (in-package :cl-user)
-(defpackage cave.db
+(uiop:define-package :cave.db
   (:use :cl)
   (:import-from :cave.config
                 :config)

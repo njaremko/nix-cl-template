@@ -1,5 +1,5 @@
 (in-package :cl-user)
-(defpackage cave.view
+(uiop:define-package :cave.view
   (:use :cl)
   (:import-from :cave.config
                 :*template-directory*)
@@ -27,8 +27,8 @@
       (setf template (djula:compile-template* (princ-to-string template-path)))
       (setf (gethash template-path *template-registry*) template))
     (apply #'djula:render-template*
-           template nil
-           env)))
+        template nil
+      env)))
 
 (defun render-json (object)
   (setf (getf (response-headers *response*) :content-type) "application/json")

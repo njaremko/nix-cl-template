@@ -1,5 +1,5 @@
 (in-package :cl-user)
-(defpackage cave.web
+(uiop:define-package :cave.web
   (:use :cl
         :caveman2
         :cave.config
@@ -7,6 +7,8 @@
         :cave.db
         :datafly
         :sxql)
+  (:import-from :make-hash
+                :make-hash)
   (:export :*web*))
 (in-package :cave.web)
 
@@ -25,6 +27,10 @@
 
 (defroute "/" ()
   (render #P"index.html"))
+
+(defroute "/json" ()
+  (let ((a-hash-map (make-hash :INITIAL-CONTENTS '(:x 1 :y 2))))
+    (render-json a-hash-map)))
 
 ;;
 ;; Error pages

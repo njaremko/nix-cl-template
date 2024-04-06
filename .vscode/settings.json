@@ -12,6 +12,10 @@
     "--eval",
     "(asdf:load-system :cave)",
     "--eval",
+    "(asdf:load-system :cave/tests)",
+    "--load",
+    "app.lisp",
+    "--eval",
     "(alive/server:start)"
   ]
 }

@@ -18,37 +18,65 @@
             alexandria
             bordeaux-threads
             caveman2
-            clack
             cl-dbi
             cl-json
             cl-ppcre
+            clack
             datafly
             djula
             envy
-            hunchentoot
+            fset
             iterate
+            make-hash
             local-time
             parse-number
             postmodern
+            rove
             str
             woo
           ]);
-          roswell' = pkgs.roswell.override { sbcl = sbcl'; };
+          tailwind =
+            pkgs.nodePackages.tailwindcss.overrideAttrs (oa: {
+              plugins = [
+                pkgs.nodePackages."@tailwindcss/aspect-ratio"
+                pkgs.nodePackages."@tailwindcss/forms"
+                pkgs.nodePackages."@tailwindcss/language-server"
+                pkgs.nodePackages."@tailwindcss/line-clamp"
+                pkgs.nodePackages."@tailwindcss/typography"
+              ];
+            });
         in
         rec {
           # `nix develop`
           devShells.default = pkgs.mkShell {
             buildInputs = with pkgs; [
               nixpkgs-fmt
+              rlwrap
               sbcl'
-              roswell'
+              tailwind
               tree
             ];
             shellHook = ''
               export DIRENV_LOG_FORMAT=""
-              export CL_SOURCE_REGISTRY=$(pwd)//:
+              export CL_SOURCE_REGISTRY="$PWD/..//"
               export PATH=$(pwd)/bin:$PATH
             '';
+          };
+
+          checks = {
+            unit-tests = pkgs.stdenv.mkDerivation {
+              name = "unit-tests";
+              src = ./.;
+              doCheck = true;
+              buildInputs = [ sbcl' ];
+              checkPhase = ''
+                mkdir -p $out/tmp
+                export HOME=$out/tmp
+                export CL_SOURCE_REGISTRY="$src//";
+
+                ${sbcl'}/bin/sbcl --eval "(load (sb-ext:posix-getenv \"ASDF\"))" --eval "(asdf:test-system :cave)" --non-interactive
+              '';
+            };
           };
         });
 }

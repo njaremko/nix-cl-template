@@ -1,0 +1,2 @@
+#!/bin/bash
+rlwrap sbcl --load app.lisp "$@"

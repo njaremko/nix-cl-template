@@ -9,3 +9,4 @@
 .DS_Store
 .direnv
 .vscode/alive
+static/css/main.css

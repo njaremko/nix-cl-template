@@ -1,2 +1,0 @@
-#!/bin/sh
-APP_ENV=production clackup --server :hunchentoot --port 8080 -S $(pwd) app.lisp

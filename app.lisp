@@ -2,7 +2,7 @@
 
 (asdf:load-system :cave)
 
-(defpackage cave.app
+(uiop:define-package :cave.app
   (:use :cl)
   (:import-from :lack.builder
                 :builder)

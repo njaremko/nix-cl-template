@@ -1,12 +1,9 @@
-(in-package :cl-user)
-(defpackage cave-test
-  (:use :cl
-        :cave
-        :prove))
-(in-package :cave-test)
+(uiop:define-package #:cave/tests/main
+  (:use #:cl
+        #:cave
+        #:rove))
+(in-package #:cave/tests/main)
 
-(plan nil)
-
-;; blah blah blah.
-
-(finalize)
+(deftest parse-message-test
+  (testing "invalid message"
+    (ok (= 10 10))))

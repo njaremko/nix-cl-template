@@ -1,5 +1,5 @@
 (in-package :cl-user)
-(defpackage cave.config
+(uiop:define-package :cave.config
   (:use :cl)
   (:import-from :envy
                 :config-env-var
@@ -15,21 +15,21 @@
 
 (setf (config-env-var) "APP_ENV")
 
-(defparameter *application-root*   (asdf:system-source-directory :cave))
-(defparameter *static-directory*   (merge-pathnames #P"static/" *application-root*))
+(defparameter *application-root* (asdf:system-source-directory :cave))
+(defparameter *static-directory* (merge-pathnames #P"static/" *application-root*))
 (defparameter *template-directory* (merge-pathnames #P"templates/" *application-root*))
 
 (defconfig :common
-  `(:databases ((:maindb :sqlite3 :database-name ":memory:"))))
+           `(:databases ((:maindb :sqlite3 :database-name ":memory:"))))
 
 (defconfig |development|
-  '())
+           '())
 
 (defconfig |production|
-  '())
+           '())
 
 (defconfig |test|
-  '())
+           '())
 
 (defun config (&optional key)
   (envy:config #.(package-name *package*) key))

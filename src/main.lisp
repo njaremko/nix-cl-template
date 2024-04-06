@@ -1,5 +1,5 @@
 (in-package :cl-user)
-(defpackage cave
+(uiop:define-package :cave
   (:use :cl)
   (:import-from :cave.config
                 :config)
@@ -10,19 +10,19 @@
 (in-package :cave)
 
 (defvar *appfile-path*
-  (asdf:system-relative-pathname :cave #P"app.lisp"))
+        (asdf:system-relative-pathname :cave #P"app.lisp"))
 
 (defvar *handler* nil)
 
 (defun start (&rest args &key server port debug &allow-other-keys)
   (declare (ignore server port debug))
   (when *handler*
-    (restart-case (error "Server is already running.")
-      (restart-server ()
-        :report "Restart the server"
-        (stop))))
+        (restart-case (error "Server is already running.")
+          (restart-server ()
+                          :report "Restart the server"
+                          (stop))))
   (setf *handler*
-        (apply #'clackup *appfile-path* args)))
+    (apply #'clackup *appfile-path* args)))
 
 (defun stop ()
   (prog1
