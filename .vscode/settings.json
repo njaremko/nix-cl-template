@@ -1,0 +1,17 @@
+{
+  "editor.formatOnType": true,
+  "[commonlisp]": {
+    "editor.wordSeparators": "`|;:'\",()"
+  },
+  "alive.lsp.startCommand": [
+    "sbcl",
+    "--eval",
+    "(load (sb-ext:posix-getenv \"ASDF\"))",
+    "--eval",
+    "(asdf:load-system :alive-lsp)",
+    "--eval",
+    "(asdf:load-system :cave)",
+    "--eval",
+    "(alive/server:start)"
+  ]
+}
