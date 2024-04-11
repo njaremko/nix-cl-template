@@ -1,2 +1,2 @@
 #!/bin/bash
-rlwrap sbcl --eval "(asdf:test-system :cave)"
+rlwrap sbcl --eval "(load (sb-ext:posix-getenv \"ASDF\"))" --eval "(asdf:test-system :cave)" --non-interactive

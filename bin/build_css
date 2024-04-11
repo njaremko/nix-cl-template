@@ -1,2 +1,0 @@
-#!/bin/sh
-tailwindcss -i static/css/tailwind.css -o static/css/main.css --minify
