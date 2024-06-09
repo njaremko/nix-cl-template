@@ -28,6 +28,13 @@
 (defun auth0-config (key)
   (getf (config :auth0) key))
 
+(defmacro defprotected (path args &body body)
+  `(defroute ,path ,args
+     (multiple-value-bind (session session-exists) (gethash "auth0" *session*)
+       (if session-exists
+           (progn ,@body)
+           (redirect "/login")))))
+
 ;;
 ;; Routing rules
 
@@ -105,11 +112,8 @@
         (redirect "/success"))
       (redirect "/failure")))
 
-(defroute "/protected" ()
-  (multiple-value-bind (session session-exists) (gethash "auth0" *session*)
-    (if session-exists
-        (render #P"protected.html" (list (cons :user-info session)))
-        (redirect "/login"))))
+(defprotected "/protected" ()
+  (render #P"protected.html" (list (cons :user-info session))))
 
 (defroute "/logout" ()
   (let ((has-session (gethash "auth0" *session*)))
