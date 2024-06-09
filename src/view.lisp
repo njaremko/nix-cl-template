@@ -1,6 +1,7 @@
 (in-package :cl-user)
 (uiop:define-package :cave.view
   (:use :cl)
+  (:local-nicknames (#:jzon #:com.inuoe.jzon))
   (:import-from :cave.config
                 :*template-directory*)
   (:import-from :caveman2
@@ -11,8 +12,6 @@
                 :compile-template*
                 :render-template*
                 :*djula-execute-package*)
-  (:import-from :datafly
-                :encode-json)
   (:export :render
            :render-json))
 (in-package :cave.view)
@@ -32,8 +31,7 @@
 
 (defun render-json (object)
   (setf (getf (response-headers *response*) :content-type) "application/json")
-  (encode-json object))
-
+  (jzon:stringify object))
 
 ;;
 ;; Execute package definition

@@ -3,21 +3,20 @@
   (:use :cl)
   (:import-from :cave.config
                 :config)
-  (:import-from :datafly
-                :*connection*)
-  (:import-from :cl-dbi
+  (:import-from :postmodern
                 :connect-cached)
-  (:export :connection-settings
-           :db
-           :with-connection))
+  (:export :with-connection))
 (in-package :cave.db)
 
 (defun connection-settings (&optional (db :maindb))
-  (cdr (assoc db (config :databases))))
+    (config :databases))
 
-(defun db (&optional (db :maindb))
-  (apply #'connect-cached (connection-settings db)))
-
-(defmacro with-connection (conn &body body)
-  `(let ((*connection* ,conn))
-     ,@body))
+(defmacro with-connection (&body body)
+  `(let* ((settings (connection-settings))
+          (database-name (getf settings :database-name))
+          (username (getf settings :username))
+          (password (getf settings :password))
+          (host (getf settings :host))
+          (port (getf settings :port)))
+     (postmodern:with-connection (list database-name username password host :port port :pooled-p t)
+       ,@body)))

@@ -18,11 +18,11 @@
             alexandria
             bordeaux-threads
             caveman2
-            cl-dbi
+            com_dot_inuoe_dot_jzon
             cl-json
             cl-ppcre
+            cl-yesql
             clack
-            datafly
             djula
             envy
             fset
@@ -34,6 +34,8 @@
             rove
             str
             woo
+            usocket
+            flexi-streams
           ]);
           tailwind =
             pkgs.nodePackages.tailwindcss.overrideAttrs (oa: {

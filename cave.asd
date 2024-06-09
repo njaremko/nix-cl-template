@@ -6,11 +6,11 @@
   :depends-on (:alexandria
                :bordeaux-threads
                :caveman2
+               :com.inuoe.jzon
                :clack
-               :cl-dbi
                :cl-json
                :cl-ppcre
-               :datafly
+               :cl-yesql
                :djula
                :envy
                :make-hash

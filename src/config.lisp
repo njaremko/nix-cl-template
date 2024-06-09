@@ -20,7 +20,11 @@
 (defparameter *template-directory* (merge-pathnames #P"templates/" *application-root*))
 
 (defconfig :common
-           `(:databases ((:maindb :sqlite3 :database-name ":memory:"))))
+  `(:databases (:database-name "cave"
+                 :username "postgres"
+                 :password "postgres"
+                 :host "localhost"
+                 :port 5432)))
 
 (defconfig |development|
            '())
