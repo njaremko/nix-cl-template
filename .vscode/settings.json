@@ -17,5 +17,8 @@
     "app.lisp",
     "--eval",
     "(alive/server:start)"
-  ]
+  ],
+  "files.associations": {
+    "**/templates/**/*.html": "django-html"
+  }
 }

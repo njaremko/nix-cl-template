@@ -19,6 +19,8 @@
             alexandria
             bordeaux-threads
             caveman2
+            check-it
+            fiveam
             cl-json
             cl-ppcre
             cl-yesql

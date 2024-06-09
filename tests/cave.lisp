@@ -1,9 +1,10 @@
-(uiop:define-package #:cave/tests/main
+(uiop:define-package #:cave/test
   (:use #:cl
         #:cave
-        #:rove))
-(in-package #:cave/tests/main)
+        #:fiveam))
+(in-package #:cave/test)
 
-(deftest parse-message-test
-  (testing "invalid message"
-    (ok (= 10 10))))
+; Root suite, used to trigger all test suites from ASDF
+(def-suite cave-suite
+           :description "Test my system")
+

@@ -4,7 +4,8 @@
         :caveman2
         :cave.config
         :cave.view
-        :cave.db)
+        :cave.db
+        :cave.auth)
   (:local-nicknames
    (#:jzon #:com.inuoe.jzon)
    (#:dex #:dexador))
@@ -23,11 +24,6 @@
 (defvar *web* (make-instance '<web>))
 (clear-routing-rules *web*)
 
-(defparameter *user-info-map* (make-hash-table :test 'equal))
-
-(defun auth0-config (key)
-  (getf (config :auth0) key))
-
 (defmacro defprotected (path args &body body)
   `(defroute ,path ,args
      (multiple-value-bind (session session-exists) (gethash "auth0" *session*)
@@ -37,16 +33,6 @@
 
 ;;
 ;; Routing rules
-
-(defun auth0-login-url ()
-  (let* ((domain (auth0-config :domain))
-         (client-id (auth0-config :client-id))
-         (redirect-uri (auth0-config :redirect-uri)))
-    (str:concat "https://" domain "/authorize?"
-      "response_type=code&"
-      "client_id=" client-id "&"
-      "redirect_uri=" redirect-uri "&"
-      "scope=openid%20profile%20email")))
 
 (defroute "/" ()
   (let ((login-url (auth0-login-url))
@@ -63,50 +49,10 @@
     (let ((fetched (postmodern:query "SELECT 7 + 10 as result, 6 as id" :array-hash)))
       (jzon:stringify fetched))))
 
-(defun auth0-logout-url ()
-  (let* ((domain (auth0-config :domain))
-         (client-id (auth0-config :client-id))
-         (logout-uri (auth0-config :logout-uri)))
-    (str:concat "https://" domain "/v2/logout?"
-      "client_id=" client-id "&"
-      "returnTo=" logout-uri)))
-
-(defun store-user-info (user-info)
-  (setf (gethash (gethash "sub" user-info) *user-info-map*) user-info))
-
-(defun post-token-request (code)
-  (let* ((domain (auth0-config :domain))
-         (client-id (auth0-config :client-id))
-         (client-secret (auth0-config :client-secret))
-         (redirect-uri (auth0-config :redirect-uri))
-         (url (str:concat "https://" domain "/oauth/token"))
-         (body (jzon:stringify
-                 (make-hash :INITIAL-CONTENTS `(:grant_type "authorization_code"
-                                                            :client_id ,client-id
-                                                            :client_secret ,client-secret
-                                                            :code ,code
-                                                            :redirect_uri ,redirect-uri)))))
-    (dex:post url
-      :content body
-      :headers `(("Content-Type" . "application/json")))))
-
-(defun parse-response (response)
-  (let* ((tokens (jzon:parse response))
-         (access-token (gethash "access_token" tokens)))
-    (retrieve-user-info access-token)))
-
-(defun retrieve-user-info (access-token)
-  (let* ((domain (auth0-config :domain))
-         (url (str:concat "https://" domain "/userinfo")))
-    (multiple-value-bind (body code headers)
-        (dex:get url
-          :headers `(("Authorization" . ,(str:concat "Bearer " access-token))))
-      (jzon:parse body))))
-
 (defroute "/auth/auth0/callback" (&key |code|)
   (if |code|
-      (let* ((response (post-token-request |code|))
-             (user-info (parse-response response)))
+      (let* ((token (exchange-code-for-token |code|))
+             (user-info (retrieve-user-info token)))
         (store-user-info user-info)
         (setf (gethash "auth0" *session*) user-info)
         (redirect "/success"))

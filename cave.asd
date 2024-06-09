@@ -29,6 +29,7 @@
                                      (:file "main")
                                      (:file "db")
                                      (:file "view")
+                                     (:file "auth")
                                      (:file "web"))))
   :in-order-to ((test-op (test-op :cave/tests))))
 
@@ -37,8 +38,13 @@
   :description "Description of your cave system"
   :author "Your Name"
   :license "Specify your license here"
-  :depends-on (:cave :rove)
+  :depends-on (:cave :fiveam :check-it)
   :components ((:module "tests"
                         :serial t
-                        :components ((:file "cave"))))
-  :perform (test-op (op c) (symbol-call :rove '#:run c)))
+                        :components ((:file "cave")
+                        (:module "suites"
+                          :serial nil
+                          :components ((:file "example-suite"))))))
+  :perform (test-op (op c)
+                    (symbol-call :fiveam :run!
+                                 (find-symbol* :cave-suite :cave/test))))

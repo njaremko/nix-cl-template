@@ -1,15 +1,17 @@
 {% extends "layouts/default.html" %}
-{% block title %}Welcome to Caveman2{% endblock %}
+{% block title %}
+  Welcome to Caveman2
+{% endblock %}
 {% block content %}
-<div id="main">
-  Welcome to <a href="http://8arrow.org/caveman/">Caveman2</a>!
-  {% if session %}
-    Welcomn {{ session }}
-    <form id="logout-form" action="/logout" method="GET">
-      <button type="submit">Logout</button>
-  </form>
-  {% else %}
-    <a href="{{ login-url }}"><button>Login with Auth0</button></a>
-  {% endif %}
-</div>
+  <div id="main">
+    Welcome to <a href="http://8arrow.org/caveman/">Caveman2</a>!
+    {% if session %}
+      Welcome {{ session }}
+      <form id="logout-form" action="/logout" method="GET">
+        <button type="submit">Logout</button>
+      </form>
+    {% else %}
+      <a href="{{ login-url }}"><button>Login with Auth0</button></a>
+    {% endif %}
+  </div>
 {% endblock %}
