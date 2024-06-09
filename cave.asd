@@ -6,18 +6,18 @@
   :depends-on (:alexandria
                :bordeaux-threads
                :caveman2
-               :com.inuoe.jzon
-               :clack
                :cl-json
                :cl-ppcre
                :cl-yesql
+               :clack
+               :com.inuoe.jzon
                :dexador
                :djula
                :envy
-               :make-hash
                :fset
                :iterate
                :local-time
+               :make-hash
                :parse-number
                :postmodern
                :str
