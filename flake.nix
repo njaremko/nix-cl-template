@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
     flake-utils.url = "github:numtide/flake-utils";
     nix-filter.url = "github:numtide/nix-filter";
   };
@@ -14,30 +14,31 @@
           };
           lib = pkgs.lib;
           stdenv = pkgs.stdenv;
+          # A few of these are because Alive LSP needs them.
           sbcl' = pkgs.sbcl.withPackages (ps: with ps; [
             alexandria
             bordeaux-threads
             caveman2
-            com_dot_inuoe_dot_jzon
             cl-json
             cl-ppcre
             cl-yesql
             clack
-            djula
+            com_dot_inuoe_dot_jzon
             dexador
+            djula
             envy
+            flexi-streams
             fset
-            uuid
             iterate
-            make-hash
             local-time
+            make-hash
             parse-number
             postmodern
             rove
             str
-            woo
             usocket
-            flexi-streams
+            uuid
+            woo
           ]);
           tailwind =
             pkgs.nodePackages.tailwindcss.overrideAttrs (oa: {
