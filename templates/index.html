@@ -3,5 +3,13 @@
 {% block content %}
 <div id="main">
   Welcome to <a href="http://8arrow.org/caveman/">Caveman2</a>!
+  {% if session %}
+    Welcomn {{ session }}
+    <form id="logout-form" action="/logout" method="GET">
+      <button type="submit">Logout</button>
+  </form>
+  {% else %}
+    <a href="{{ login-url }}"><button>Login with Auth0</button></a>
+  {% endif %}
 </div>
 {% endblock %}

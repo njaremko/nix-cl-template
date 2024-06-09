@@ -11,6 +11,7 @@
                :cl-json
                :cl-ppcre
                :cl-yesql
+               :dexador
                :djula
                :envy
                :make-hash
@@ -20,6 +21,7 @@
                :parse-number
                :postmodern
                :str
+               :uuid
                :woo)
   :components ((:module "src"
                         :serial t

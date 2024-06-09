@@ -24,8 +24,10 @@
             cl-yesql
             clack
             djula
+            dexador
             envy
             fset
+            uuid
             iterate
             make-hash
             local-time

@@ -3,13 +3,11 @@
   (:use :cl)
   (:import-from :cave.config
                 :config)
-  (:import-from :postmodern
-                :connect-cached)
   (:export :with-connection))
 (in-package :cave.db)
 
-(defun connection-settings (&optional (db :maindb))
-    (config :databases))
+(defun connection-settings ()
+  (config :databases))
 
 (defmacro with-connection (&body body)
   `(let* ((settings (connection-settings))

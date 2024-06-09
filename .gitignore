@@ -10,3 +10,4 @@
 .direnv
 .vscode/alive
 static/css/main.css
+.env

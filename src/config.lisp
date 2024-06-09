@@ -20,14 +20,19 @@
 (defparameter *template-directory* (merge-pathnames #P"templates/" *application-root*))
 
 (defconfig :common
-  `(:databases (:database-name "cave"
-                 :username "postgres"
-                 :password "postgres"
-                 :host "localhost"
-                 :port 5432)))
+           `(:databases (:database-name "cave"
+                                        :username "postgres"
+                                        :password "postgres"
+                                        :host "localhost"
+                                        :port 5432)))
 
 (defconfig |development|
-           '())
+           `(:auth0 (:domain ,(uiop:getenv "AUTH0_DOMAIN")
+                             :client-id ,(uiop:getenv "AUTH0_CLIENT_ID")
+                             :client-secret ,(uiop:getenv "AUTH0_CLIENT_SECRET")
+                             :redirect-uri "http://localhost:3000/auth/auth0/callback"
+                             :logout-uri "http://localhost:3000")))
+
 
 (defconfig |production|
            '())
