@@ -2,7 +2,6 @@
 (uiop:define-package :cave.web
   (:use :cl
         :caveman2
-        :cave.config
         :cave.view
         :cave.db
         :cave.auth)
@@ -81,4 +80,4 @@
 (defmethod on-exception ((app <web>) (code (eql 404)))
   (declare (ignore app))
   (merge-pathnames #P"_errors/404.html"
-                   *template-directory*))
+                   cave.config:*template-directory*))

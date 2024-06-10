@@ -18,10 +18,14 @@
 
 (defparameter *user-info-map* (make-hash-table :test 'equal))
 
+(declaim (ftype (function (symbol) string) auth0-config))
 (defun auth0-config (key)
+  (declare (optimize (speed 3) (safety 0)))
   (getf (config :auth0) key))
 
+(declaim (ftype (function () string) auth0-login-url))
 (defun auth0-login-url ()
+  (declare (optimize (speed 3) (safety 0)))
   (let* ((domain (auth0-config :domain))
          (client-id (auth0-config :client-id))
          (redirect-uri (auth0-config :redirect-uri)))
@@ -31,7 +35,9 @@
       "redirect_uri=" redirect-uri "&"
       "scope=openid%20profile%20email")))
 
+(declaim (ftype (function () string) auth0-logout-url))
 (defun auth0-logout-url ()
+  (declare (optimize (speed 3) (safety 0)))
   (let* ((domain (auth0-config :domain))
          (client-id (auth0-config :client-id))
          (logout-uri (auth0-config :logout-uri)))
@@ -39,6 +45,7 @@
       "client_id=" client-id "&"
       "returnTo=" logout-uri)))
 
+(declaim (ftype (function (string) string) exchange-code-for-token))
 (defun exchange-code-for-token (code)
   (let* ((domain (auth0-config :domain))
          (client-id (auth0-config :client-id))
@@ -51,24 +58,18 @@
                                                             :client_secret ,client-secret
                                                             :code ,code
                                                             :redirect_uri ,redirect-uri)))))
-    (multiple-value-bind (body code)
-        (dex:post url
-          :content body
-          :headers `(("Content-Type" . "application/json")))
-      (if (= code 200)
-          (let ((tokens (jzon:parse body)))
-            (gethash "access_token" tokens))
-          (redirect "/failure")))))
+    (let* ((response (dex:post url
+                       :content body
+                       :headers `(("Content-Type" . "application/json"))))
+           (tokens (jzon:parse response)))
+      (gethash "access_token" tokens))))
 
+(declaim (ftype (function (string) (values hash-table &optional)) retrieve-user-info))
 (defun retrieve-user-info (access-token)
   (let* ((domain (auth0-config :domain))
          (url (str:concat "https://" domain "/userinfo")))
-    (multiple-value-bind (body code)
-        (dex:get url
-          :headers `(("Authorization" . ,(str:concat "Bearer " access-token))))
-      (if (= code 200)
-          (jzon:parse body)
-          (redirect "/failure")))))
+    (jzon:parse (dex:get url
+                  :headers `(("Authorization" . ,(str:concat "Bearer " access-token)))))))
 
 (defun store-user-info (user-info)
   (setf (gethash (gethash "sub" user-info) *user-info-map*) user-info))
