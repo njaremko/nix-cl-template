@@ -33,7 +33,20 @@
       nil)
   :session
   (if (productionp)
-      nil
+      (lambda (app)
+        (lambda (env)
+          (handler-case
+              (funcall app env)
+            (error (e)
+              (declare (ignore e))
+              (let* ((headers (getf env :headers))
+                     (accept (gethash "accept" headers))
+                     (accepts-json (and accept (search "application/json" accept))))
+                (if accepts-json
+                    `(500 (:content-type "application/json")
+                          (,(format nil "{\"error\": \"Stripe Webhook Error\", \"message\": \"~A\"}" (princ-to-string e))))
+                    `(500 (:content-type "text/html")
+                          ("<html><body><h1>Internal Server Error</h1><p>Stripe Webhook Error: ~A</p></body></html>" (princ-to-string e)))))))))
       (lambda (app)
         (lambda (env)
           (funcall app env))))
