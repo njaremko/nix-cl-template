@@ -59,7 +59,7 @@
       (redirect "/failure")))
 
 (defprotected "/protected" ()
-  (render #P"protected.html" (list (cons :user-info session))))
+  (render #P"protected.html" `((:user-info ,session))))
 
 (defroute "/logout" ()
   (let ((has-session (gethash "auth0" *session*)))
@@ -68,6 +68,12 @@
           (remhash "auth0" *session*)
           (redirect url))
         (redirect "/"))))
+
+(defroute ("/stripe/webhook" :method :POST) ()
+  (let ((is-valid (cave.stripe:verify-webhook *request*)))
+    (if is-valid
+        "Ok"
+        (throw-code 401))))
 
 ;;
 ;; Error pages

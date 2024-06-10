@@ -16,6 +16,7 @@
                :envy
                :fset
                :iterate
+               :ironclad
                :local-time
                :make-hash
                :parse-number
@@ -27,6 +28,7 @@
                         :serial t
                         :components ((:file "config")
                                      (:file "main")
+                                     (:file "stripe")
                                      (:file "db")
                                      (:file "view")
                                      (:file "auth")

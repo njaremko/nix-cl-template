@@ -32,6 +32,7 @@
             flexi-streams
             fset
             iterate
+            ironclad
             local-time
             make-hash
             parse-number
@@ -64,6 +65,7 @@
               sbcl'
               tailwind
               tree
+              stripe-cli
             ];
             shellHook = ''
               export DIRENV_LOG_FORMAT=""
