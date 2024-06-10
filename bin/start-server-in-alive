@@ -1,0 +1,6 @@
+#!/bin/bash
+rlwrap sbcl \
+    --load app.lisp \
+    --eval "(asdf:load-system :swank-client)" \
+    --eval "(defvar *myswank* (swank-client:slime-connect \"127.0.0.1\" 4005))" \
+    --eval "(swank-client:slime-eval '(cave:start :server :woo :port 3000) *myswank*)"

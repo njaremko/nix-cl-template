@@ -42,9 +42,9 @@
   :components ((:module "tests"
                         :serial t
                         :components ((:file "cave")
-                        (:module "suites"
-                          :serial nil
-                          :components ((:file "example-suite"))))))
+                                     (:module "suites"
+                                              :serial nil
+                                              :components ((:file "example-suite"))))))
   :perform (test-op (op c)
                     (symbol-call :fiveam :run!
                                  (find-symbol* :cave-suite :cave/test))))

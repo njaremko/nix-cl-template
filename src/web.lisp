@@ -46,7 +46,7 @@
 
 (defroute "/db" ()
   (with-connection
-    (let ((fetched (postmodern:query "SELECT 7 + 10 as result, 6 as id" :array-hash)))
+    (let ((fetched (postmodern:query "SELECT 5 + 19 as result, 6 as id" :array-hash)))
       (jzon:stringify fetched))))
 
 (defroute "/auth/auth0/callback" (&key |code|)

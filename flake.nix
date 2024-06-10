@@ -38,6 +38,8 @@
             postmodern
             rove
             str
+            swank
+            swank-client
             usocket
             uuid
             woo

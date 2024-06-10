@@ -1,2 +1,4 @@
 #!/bin/bash
-rlwrap sbcl --load app.lisp "$@"
+rlwrap sbcl \
+    --load app.lisp \
+    --eval "(asdf:load-system :cave/tests)" "$@"
