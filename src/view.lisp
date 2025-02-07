@@ -46,4 +46,4 @@
   (:import-from :caveman2
                 :url-for))
 
-(setf djula:*djula-execute-package* (find-package :cave.djula))
+(setf djula:*template-package* (find-package :cave.djula))
