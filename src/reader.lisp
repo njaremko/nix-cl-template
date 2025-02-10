@@ -23,6 +23,14 @@
     ((fset:set? obj) (fset:image #'replace-booleans obj))
     (t obj)))
 
+(defun eval-feature (feature)
+  "Evaluate feature expressions for reader conditionals."
+  (cond ((keywordp feature)
+         (member feature cl:*features*))
+        ((and (listp feature) (eq (first feature) :not))
+         (not (eval-feature (second feature))))
+        (t (error "Unsupported feature expression: ~S" feature))))
+
 (defun read-vector (stream char)
   (declare (ignore char))
   (fset:convert 'fset:seq (mapcar #'replace-booleans (read-delimited-list #\] stream t))))
@@ -36,15 +44,15 @@
       (error "Map literal must contain an even number of elements"))
 
     (loop for (k v) on elements by #'cddr do
-      (unless (keywordp k)
-        (error "Map keys must be keywords"))
+      (unless (typep k '(or keyword string number symbol fset:seq fset:map fset:set))
+        (error "Map keys must be hashable (keyword, string, number, symbol, or fset data structure)"))
       (setf map (fset:with map k v)))
 
     map))
 
 ;; Reader macro for Clojure-style sets using #{...}
-(defun read-set (stream char arg)
-  (declare (ignore char arg))  ; Accept all 3 parameters but ignore the latter two.
+(defun read-set (stream char &rest args)
+  (declare (ignore char args))
   (fset:convert 'fset:set (mapcar #'replace-booleans (read-delimited-list #\} stream t))))
 
 ;; Define the readtable in a global variable.
@@ -57,7 +65,13 @@
   (:macro-char #\{ 'read-map)
   (:macro-char #\} (get-macro-character #\)))
   (:macro-char #\] (get-macro-character #\)))
-  (:dispatch-macro-char #\# #\{ 'read-set))
+  (:dispatch-macro-char #\# #\{ 'read-set)
+  ;; Add Clojure-style comment syntax
+  (:dispatch-macro-char #\# #\_
+    (lambda (stream char arg)
+      (declare (ignore char arg))
+      (read stream nil (values) t)
+      (values))))
 
 (defun enable-clojure-syntax ()
   "Enable Clojure-style literal syntax for vectors, maps, and sets."
