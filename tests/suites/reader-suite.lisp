@@ -8,7 +8,7 @@
 #.(cave.reader:enable-clojure-syntax)
 
 (test vector-reader-test
-      (let ((result [1 2 3]))
+      (let ((result [1, 2, 3]))
         (is (typep result 'fset:seq))
         (is (= 3 (fset:size result)))
         (is (equal '(1 2 3)
@@ -16,7 +16,7 @@
 
 (test map-reader-test
       (cave.reader:enable-clojure-syntax)
-      (let ((result {:a 1 :b 2}))
+      (let ((result {:a 1, :b 2}))
         (is (typep result 'fset:map))
         (is (= 2 (fset:size result)))
         (is (= 1 (fset:@ result :a)))
@@ -24,7 +24,7 @@
 
 (test set-reader-test
       (cave.reader:enable-clojure-syntax)
-      (let ((result #{1 2 3}))
+      (let ((result #{1, 2, 3}))
         (is (typep result 'fset:set))
         (is (= 3 (fset:size result)))
         (is (fset:equal? result (fset:set 1 2 3))))
