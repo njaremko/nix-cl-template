@@ -73,6 +73,8 @@
             tailwind
             tree
             stripe-cli
+            libev
+            pkg-config
           ];
           shellHook = ''
             export DIRENV_LOG_FORMAT=""

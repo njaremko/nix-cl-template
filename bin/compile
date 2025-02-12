@@ -1,0 +1,10 @@
+#!/bin/bash
+rlwrap sbcl \
+    --load app.lisp \
+    --eval "(sb-ext:save-lisp-and-die \"cave\"
+                          :toplevel (lambda ()
+                                    (cave:start :server :woo :port 8080)
+                                    ;; Return 0 for successful exit code
+                                    0)
+                          :executable t
+                          :compression t)"
