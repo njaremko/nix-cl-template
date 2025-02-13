@@ -16,7 +16,7 @@
            :store-user-info))
 (in-package :cave.auth)
 
-(defparameter *user-info-map* (make-hash-table :test 'equal))
+(defparameter *user-info-map* (fset:empty-map))
 
 (declaim (ftype (function (symbol) string) auth0-config))
 (defun auth0-config (key)

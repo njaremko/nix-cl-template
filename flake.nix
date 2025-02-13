@@ -44,6 +44,7 @@
             make-hash
             parse-number
             postmodern
+            transducers
             rove
             str
             swank

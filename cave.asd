@@ -18,6 +18,7 @@
                :iterate
                :ironclad
                :local-time
+               :transducers
                :make-hash
                :parse-number
                :postmodern
