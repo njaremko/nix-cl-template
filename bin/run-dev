@@ -1,2 +1,2 @@
 #!/bin/sh
-APP_ENV=development repl --load app.lisp --eval "(cave:start :server :woo :port 3000)"
+APP_ENV=development repl --load app.lisp --eval "(cave:start-dev)"

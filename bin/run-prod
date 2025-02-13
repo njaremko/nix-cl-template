@@ -1,2 +1,2 @@
 #!/bin/sh
-APP_ENV=production repl --load app.lisp --eval "(cave:start :server :woo :port 8080)"
+APP_ENV=production repl --load app.lisp --eval "(cave:start-custom :server :woo :port 8080)"

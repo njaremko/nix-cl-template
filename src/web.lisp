@@ -58,7 +58,10 @@
       (redirect "/failure")))
 
 (defprotected "/protected" ()
-  (render #P"protected.html" `((:user-info ,session))))
+  (let* ((x (gethash "auth0" *session*))
+         (y (get-user-info (gethash "sub" x)))
+         (z (jzon:stringify (fset:convert 'hash-table y))))
+    (render #P"protected.html" `((:user-info ,z)))))
 
 (defroute "/logout" ()
   (let ((has-session (gethash "auth0" *session*)))

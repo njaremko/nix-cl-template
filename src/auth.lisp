@@ -13,7 +13,8 @@
            :auth0-logout-url
            :exchange-code-for-token
            :retrieve-user-info
-           :store-user-info))
+           :store-user-info
+           :get-user-info))
 (in-package :cave.auth)
 
 (defparameter *user-info-map* (fset:empty-map))
@@ -53,11 +54,12 @@
          (redirect-uri (auth0-config :redirect-uri))
          (url (str:concat "https://" domain "/oauth/token"))
          (body (jzon:stringify
-                 (make-hash :INITIAL-CONTENTS `(:grant_type "authorization_code"
-                                                            :client_id ,client-id
-                                                            :client_secret ,client-secret
-                                                            :code ,code
-                                                            :redirect_uri ,redirect-uri)))))
+                 (fset:convert 'hash-table
+                               (fset:map (:grant_type "authorization_code")
+                                 (:client_id client-id)
+                                 (:client_secret client-secret)
+                                 (:code code)
+                                 (:redirect_uri redirect-uri))))))
     (let* ((response (dex:post url
                        :content body
                        :headers `(("Content-Type" . "application/json"))))
@@ -72,4 +74,8 @@
                   :headers `(("Authorization" . ,(str:concat "Bearer " access-token)))))))
 
 (defun store-user-info (user-info)
-  (setf (gethash (gethash "sub" user-info) *user-info-map*) user-info))
+  (setf *user-info-map* (fset:with *user-info-map* (gethash "sub" user-info) (fset:convert 'fset:map user-info))))
+
+(declaim (ftype (function (string) (values (or null fset:map) &optional)) get-user-info))
+(defun get-user-info (sub)
+  (fset:lookup *user-info-map* sub))
