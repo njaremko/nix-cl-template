@@ -20,21 +20,20 @@
 (defparameter *template-directory* (merge-pathnames #P"templates/" *application-root*))
 
 (defconfig :common
-           `(:debug T
-                    :error-log #P"myapp_error.log"
-                    :databases (:database-name "cave"
-                                               :username "postgres"
-                                               :password "postgres"
-                                               :host "localhost"
-                                               :port 5432)
-                    :auth0 (:domain ,(uiop:getenv "AUTH0_DOMAIN")
-                                    :client-id ,(uiop:getenv "AUTH0_CLIENT_ID")
-                                    :client-secret ,(uiop:getenv "AUTH0_CLIENT_SECRET")
-                                    :redirect-uri "http://localhost:3000/auth/auth0/callback"
-                                    :logout-uri "http://localhost:3000")
-                    :stripe (:public-key ,(uiop:getenv "STRIPE_PUBLIC_KEY")
-                                         :secret-key ,(uiop:getenv "STRIPE_SECRET_KEY")
-                                         :webhook-secret ,(uiop:getenv "STRIPE_WEBHOOK_SECRET"))))
+           `(:error-log #P"myapp_error.log"
+                        :databases (:database-name "cave"
+                                                   :username "postgres"
+                                                   :password "postgres"
+                                                   :host "localhost"
+                                                   :port 5432)
+                        :auth0 (:domain ,(uiop:getenv "AUTH0_DOMAIN")
+                                        :client-id ,(uiop:getenv "AUTH0_CLIENT_ID")
+                                        :client-secret ,(uiop:getenv "AUTH0_CLIENT_SECRET")
+                                        :redirect-uri "http://localhost:3000/auth/auth0/callback"
+                                        :logout-uri "http://localhost:3000")
+                        :stripe (:public-key ,(uiop:getenv "STRIPE_PUBLIC_KEY")
+                                             :secret-key ,(uiop:getenv "STRIPE_SECRET_KEY")
+                                             :webhook-secret ,(uiop:getenv "STRIPE_WEBHOOK_SECRET"))))
 
 (defconfig |development|
            `())

@@ -32,10 +32,10 @@
     (apply #'clackup *appfile-path* args)))
 
 (defun start ()
-  (start-custom :server :woo :port 3000))
+  (start-custom :server :woo :port 3000 :debug nil))
 
 (defun start-dev ()
-  (start-custom :server :hunchentoot :port 3000 :debug t))
+  (start-custom :server :hunchentoot :port 3000 :debug nil))
 
 (defun stop ()
   (prog1
