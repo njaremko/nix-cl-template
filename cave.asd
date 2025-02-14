@@ -24,6 +24,7 @@
                :postmodern
                :str
                :uuid
+               :swank
                :woo)
   :components ((:module "src"
                         :serial t
@@ -49,7 +50,7 @@
                                      (:module "suites"
                                               :serial nil
                                               :components ((:file "example-suite")
-                                                         (:file "reader-suite"))))))
+                                                           (:file "reader-suite"))))))
   :perform (test-op (op c)
                     (symbol-call :fiveam :run!
                                  (find-symbol* :cave-suite :cave/test))))

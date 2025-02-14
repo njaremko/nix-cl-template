@@ -11,3 +11,4 @@
 .vscode/alive
 static/css/main.css
 .env
+*.log
