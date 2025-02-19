@@ -13,7 +13,7 @@
                 :*web*)
   (:import-from :cave.config
                 :config
-                :productionp
+                :production-p
                 :*static-directory*))
 (in-package :cave.app)
 
@@ -24,7 +24,7 @@
                path
                nil))
    :root *static-directory*)
-  (if (productionp)
+  (if (production-p)
       nil
       :accesslog)
   (if (getf (config) :error-log)
@@ -32,7 +32,7 @@
         :output ,(getf (config) :error-log))
       nil)
   :session
-  (if (productionp)
+  (if (production-p)
       (lambda (app)
         (lambda (env)
           (handler-case
