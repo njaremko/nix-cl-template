@@ -4,7 +4,7 @@
   (:import-from :fset
                 :empty-map
                 :empty-seq
-                :with
+              :with
                 :seq)
   (:export :enable-clojure-syntax
            :disable-clojure-syntax))
@@ -13,23 +13,15 @@
 ;; Reader macro for Clojure-style vectors using [...]
 (defun replace-booleans (obj)
   (cond
-    ((and (symbolp obj) (string-equal (symbol-name obj) "TRUE")) t)
-    ((and (symbolp obj) (string-equal (symbol-name obj) "FALSE")) nil)
-    ((fset:seq? obj) (fset:image #'replace-booleans obj))
-    ((fset:map? obj) (fset:image (lambda (k v)
+   ((and (symbolp obj) (string-equal (symbol-name obj) "TRUE")) t)
+   ((and (symbolp obj) (string-equal (symbol-name obj) "FALSE")) nil)
+   ((fset:seq? obj) (fset:image #'replace-booleans obj))
+   ((fset:map? obj) (fset:image (lambda (k v)
                                   (values (replace-booleans k)
-                                          (replace-booleans v)))
+                                    (replace-booleans v)))
                                 obj))
-    ((fset:set? obj) (fset:image #'replace-booleans obj))
-    (t obj)))
-
-(defun eval-feature (feature)
-  "Evaluate feature expressions for reader conditionals."
-  (cond ((keywordp feature)
-         (member feature cl:*features*))
-        ((and (listp feature) (eq (first feature) :not))
-         (not (eval-feature (second feature))))
-        (t (error "Unsupported feature expression: ~S" feature))))
+   ((fset:set? obj) (fset:image #'replace-booleans obj))
+   (t obj)))
 
 (defun read-vector (stream char)
   (declare (ignore char))
@@ -41,12 +33,12 @@
   (let* ((elements (mapcar #'replace-booleans (read-delimited-list #\} stream t)))
          (map (fset:empty-map)))
     (when (oddp (length elements))
-      (error "Map literal must contain an even number of elements"))
+          (error "Map literal must contain an even number of elements"))
 
     (loop for (k v) on elements by #'cddr do
-      (unless (typep k '(or keyword string number symbol fset:seq fset:map fset:set))
-        (error "Map keys must be hashable (keyword, string, number, symbol, or fset data structure)"))
-      (setf map (fset:with map k v)))
+            (unless (typep k '(or keyword string number symbol fset:seq fset:map fset:set))
+              (error "Map keys must be hashable (keyword, string, number, symbol, or fset data structure)"))
+            (setf map (fset:with map k v)))
 
     map))
 
@@ -68,10 +60,10 @@
   (:dispatch-macro-char #\# #\{ 'read-set)
   ;; Add Clojure-style comment syntax
   (:dispatch-macro-char #\# #\_
-    (lambda (stream char arg)
-      (declare (ignore char arg))
-      (read stream nil (values) t)
-      (values))))
+                        (lambda (stream char arg)
+                          (declare (ignore char arg))
+                          (read stream nil (values) t)
+                          (values))))
 
 (defun enable-clojure-syntax ()
   "Enable Clojure-style literal syntax for vectors, maps, and sets."
