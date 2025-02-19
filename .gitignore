@@ -12,3 +12,4 @@
 static/css/main.css
 .env
 *.log
+context.lisp

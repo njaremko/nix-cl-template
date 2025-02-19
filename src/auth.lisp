@@ -21,12 +21,12 @@
 
 (declaim (ftype (function (symbol) string) auth0-config))
 (defun auth0-config (key)
-  (declare (optimize (speed 3) (safety 0)))
+  (declare (optimize (speed 3) (safety 1) (debug 0)))
   (getf (config :auth0) key))
 
 (declaim (ftype (function () string) auth0-login-url))
 (defun auth0-login-url ()
-  (declare (optimize (speed 3) (safety 0)))
+  (declare (optimize (speed 3) (safety 1) (debug 0)))
   (let* ((domain (auth0-config :domain))
          (client-id (auth0-config :client-id))
          (redirect-uri (auth0-config :redirect-uri)))
@@ -38,7 +38,7 @@
 
 (declaim (ftype (function () string) auth0-logout-url))
 (defun auth0-logout-url ()
-  (declare (optimize (speed 3) (safety 0)))
+  (declare (optimize (speed 3) (safety 1) (debug 0)))
   (let* ((domain (auth0-config :domain))
          (client-id (auth0-config :client-id))
          (logout-uri (auth0-config :logout-uri)))
