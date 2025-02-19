@@ -20,8 +20,8 @@
 (defvar *handler* nil)
 (defvar *main-thread* nil)
 
-(defun start-custom (&rest args &key server port debug &allow-other-keys)
-  (declare (ignore server port debug))
+(defun start-custom (&rest args &key server port debug swank-port &allow-other-keys)
+  (declare (ignore server port debug swank-port))
   (when *handler*
         (restart-case (error "Server is already running.")
           (restart-server ()
@@ -35,7 +35,7 @@
   (start-custom :server :woo :port 3000 :debug nil))
 
 (defun start-dev ()
-  (start-custom :server :hunchentoot :port 3000 :debug nil))
+  (start-custom :server :hunchentoot :port 3000 :swank-port 4005 :debug t))
 
 (defun stop ()
   (prog1
