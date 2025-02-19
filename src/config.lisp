@@ -56,7 +56,7 @@
   (let ((value (uiop:getenv name)))
     (cond
      (value value)
-     ((and (null default) (production-mode-p))
+     ((and (null default) (production-p))
        (error "Missing required environment variable in production: ~A" name))
      (t default))))
 
@@ -91,23 +91,19 @@
       (intern (string-upcase (safe-getenv "LOG_LEVEL"
                                           (string (cdr (assoc :log-level defaults)))))
               :keyword))
-
     ;; Auth0 configuration (required in production)
-    (setf (gethash "auth0-domain" *config-values*)
-      (safe-getenv "AUTH0_DOMAIN"))
-
-    (setf (gethash "auth0-client-id" *config-values*)
-      (safe-getenv "AUTH0_CLIENT_ID"))
-
-    (setf (gethash "auth0-client-secret" *config-values*)
-      (safe-getenv "AUTH0_CLIENT_SECRET"))
+    (setf (gethash "auth0" *config-values*)
+      (list :domain (safe-getenv "AUTH0_DOMAIN")
+            :client-id (safe-getenv "AUTH0_CLIENT_ID")
+            :client-secret (safe-getenv "AUTH0_CLIENT_SECRET")
+            :redirect-uri (safe-getenv "AUTH0_REDIRECT_URI")
+            :logout-uri (safe-getenv "AUTH0_LOGOUT_URI")))
 
     ;; Stripe configuration (required in production)
-    (setf (gethash "stripe-secret-key" *config-values*)
-      (safe-getenv "STRIPE_SECRET_KEY"))
-
-    (setf (gethash "stripe-webhook-secret" *config-values*)
-      (safe-getenv "STRIPE_WEBHOOK_SECRET"))))
+    (setf (gethash "stripe" *config-values*)
+      (list :public-key (safe-getenv "STRIPE_PUBLIC_KEY")
+            :secret-key (safe-getenv "STRIPE_SECRET_KEY")
+            :webhook-secret (safe-getenv "STRIPE_WEBHOOK_SECRET")))))
 
 (defun config (key)
   "Get configuration value for KEY.

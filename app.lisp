@@ -13,9 +13,13 @@
                 :*web*)
   (:import-from :cave.config
                 :config
+                :development-p
                 :production-p
                 :*static-directory*))
 (in-package :cave.app)
+
+(when (development-p)
+  (cl-dotenv:load-env (merge-pathnames ".env")))
 
 (builder
   (:static

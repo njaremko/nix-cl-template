@@ -6,6 +6,7 @@
   :depends-on (:alexandria
                :bordeaux-threads
                :caveman2
+               :cl-dotenv
                :cl-json
                :cl-ppcre
                :cl-redis

@@ -53,4 +53,15 @@
   (setf (getf (response-headers *response*) :content-type) "application/json")
   (jzon:stringify object))
 
+;; Execute package definition
+
+(defpackage cave.djula
+  (:use :cl)
+  (:import-from :cave.config
+                :config
+                :development-p
+                :production-p)
+  (:import-from :caveman2
+                :url-for))
+
 (setf djula:*template-package* (find-package :cave.djula))

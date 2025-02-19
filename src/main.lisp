@@ -34,7 +34,7 @@
    to stop the current server and start a new one."
   (declare (ignore server port debug swank-port))
   (when *handler*
-        (restart-case (error "Server is already running on thread ~A." *main-thread*)
+        (restart-case (error "Server is already running.")
           (restart-server ()
                           :report "Stop the current server and start a new one"
                           (stop))))

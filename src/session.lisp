@@ -3,7 +3,7 @@
   (:use :cl)
   (:import-from :cave.config
                 :config
-                :production-mode-p)
+                :production-p)
   (:import-from :bordeaux-threads
                 :make-lock
                 :with-lock-held)
@@ -131,5 +131,5 @@
                      (session-store-clear *session-store*)))
 
 ;; Initialize session store on load if in production
-(when (production-mode-p)
+(when (production-p)
       (make-session-store))

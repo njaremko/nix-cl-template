@@ -28,6 +28,7 @@
             caveman2
             check-it
             fiveam
+            cl-dotenv
             cl-json
             cl-ppcre
             cl-redis
