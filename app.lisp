@@ -27,9 +27,9 @@
   (if (production-p)
       nil
       :accesslog)
-  (if (getf (config) :error-log)
+  (if (config :error-log)
       `(:backtrace
-        :output ,(getf (config) :error-log))
+        :output ,(config :error-log))
       nil)
   :session
   (if (production-p)

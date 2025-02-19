@@ -8,6 +8,7 @@
                :caveman2
                :cl-json
                :cl-ppcre
+               :cl-redis
                :cl-yesql
                :clack
                :com.inuoe.jzon

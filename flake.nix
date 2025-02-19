@@ -30,6 +30,7 @@
             fiveam
             cl-json
             cl-ppcre
+            cl-redis
             cl-yesql
             clack
             com_dot_inuoe_dot_jzon
